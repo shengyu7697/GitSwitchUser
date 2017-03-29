@@ -1,0 +1,60 @@
+#!/bin/bash
+
+ARGS=(
+u1
+u2
+)
+
+function user1()
+{
+    git config --global user.name "user1"
+    git config --global user.email "user1@user1.com"
+    echo "Current setting:"
+    git config -l | grep user
+}
+
+function user2()
+{
+    git config --global user.name "user2"
+    git config --global user.email "user2@user2.com"
+    echo "Current setting:"
+    git config -l | grep user
+}
+
+function gitsw()
+{
+    if [ $# == 1 ]; then
+        case $1 in
+            ${ARGS[0]})
+                user1
+                ;;
+            ${ARGS[1]})
+                user2
+                ;;
+        esac
+    else
+        echo "Usage: my_vpn {${ARGS[@]}}"
+        echo ""
+        echo "Current setting:"
+        git config -l | grep user
+        return 0
+    fi
+}
+
+# auto complete for tab
+function _gitsw()
+{
+    local cur
+    COMPREPLY=()
+    cur=${COMP_WORDS[COMP_CWORD]}
+
+    case "$cur" in
+        *)
+            COMPREPLY=( $( compgen -W '${ARGS[@]}' -- $cur ) )
+            ;;
+    esac
+}
+
+gitsw $1
+
+complete -F _gitsw -o filenames gitsw
