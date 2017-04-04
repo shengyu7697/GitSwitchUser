@@ -1,24 +1,38 @@
 #!/bin/bash
 
+USER1_NAME="user1"
+USER1_EMAIL="user1@user1.com"
+USER2_NAME="user2"
+USER2_EMAIL="user2@user2.com"
+
 ARGS=(
 u1
 u2
+list
 )
 
 function user1()
 {
-    git config --global user.name "user1"
-    git config --global user.email "user1@user1.com"
+    git config --global user.name $USER1_NAME
+    git config --global user.email $USER1_EMAIL
     echo "Current setting:"
     git config -l | grep user
 }
 
 function user2()
 {
-    git config --global user.name "user2"
-    git config --global user.email "user2@user2.com"
+    git config --global user.name $USER2_NAME
+    git config --global user.email $USER2_EMAIL
     echo "Current setting:"
     git config -l | grep user
+}
+
+function list()
+{
+    echo "user1.name=$USER1_NAME"
+    echo "user1.email=$USER1_EMAIL"
+    echo "user2.name=$USER2_NAME"
+    echo "user2.email=$USER2_EMAIL"
 }
 
 function gitsw()
@@ -30,6 +44,9 @@ function gitsw()
                 ;;
             ${ARGS[1]})
                 user2
+                ;;
+            ${ARGS[2]})
+                list
                 ;;
         esac
     else
